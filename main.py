@@ -10,6 +10,8 @@ screen.tracer(0)
 
 player = Player()
 car_manager = CarManager()
+scoreboard = Scoreboard()
+
 screen.listen()
 screen.onkeypress(player.move, "Up")
 
@@ -20,11 +22,15 @@ while game_is_on:
     car_manager.create_car()
     car_manager.move_car()
 
+    # detect player distance with the cars
     for car in car_manager.all_cars:
-        if car.distance(player) < 26:
+        if car.distance(player) < 20:
             game_is_on = False
+            scoreboard.game_over()
 
     if player.is_turtle_at_finish_line():
         player.go_start_position()
+        car_manager.level_up()
+        scoreboard.increase_level()
 
 screen.exitonclick()
